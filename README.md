@@ -1,6 +1,8 @@
 # screeps-script-caddy
 Python script for uploading/downloading scripts to/from the game Screeps
 
+***NOTE:*** Use at your own risk! Make backups of all your files! Exclamation!
+
 # Pre-requisites
 
 1. Python3
@@ -58,3 +60,4 @@ To send a collection of script modules to screeps:
 This will send all your script modules (*.js) to your screeps account.
 
 For each .js file a module of the same name (minus the extension) will be created.
+
