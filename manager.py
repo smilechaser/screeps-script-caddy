@@ -124,7 +124,10 @@ def main():
     parser.add_argument('destination', help='')
     parser.add_argument('--user', help='')
     parser.add_argument('--password', help='')
-    parser.add_argument('--force', action='store_const', const=True, help='')
+    parser.add_argument('--force', action='store_const', const=True,
+                        help='force overwrite of files in an existing folder')
+    parser.add_argument('--merge', action='store_const', const=True,
+                        help='merge scripts into a single main.js module')
 
     args = parser.parse_args()
 
@@ -184,8 +187,38 @@ def main():
                 with open(os.path.join(root, target_file), 'r') as fin:
                     modules[name] = fin.read()
 
+        if args.merge:
+
+            merge_modules(modules)
+
         # upload modules
         send_data(user, password, modules)
+
+
+def generate_header(filename):
+
+    return '''
+// {border}
+// {name}
+// {border}
+'''.format(border='-' * 25, name=filename)
+
+
+def merge_modules(modules):
+
+    keys = [x for x in modules.keys()]
+
+    keys.sort()
+
+    merged = ''
+
+    for key in keys:
+
+        merged = merged + generate_header(key) + modules[key]
+
+        del(modules[key])
+
+    modules['main.js'] = merged
 
 if __name__ == '__main__':
 
